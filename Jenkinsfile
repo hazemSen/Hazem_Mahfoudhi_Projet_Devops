@@ -1,6 +1,6 @@
 node {
     stage('Git Checkout') {
-        checkout scm
+        git branch: 'main', url: 'https://github.com/hazemSen/Hazem_Mahfoudhi_Projet_Devops.git'
     }
 
     stage('Maven Build') {
