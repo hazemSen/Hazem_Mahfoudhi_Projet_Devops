@@ -10,7 +10,6 @@ node {
 
 stage('SonarQube Analysis') {
     withSonarQubeEnv('SonarQube-Server') {
-        sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=backend -Dsonar.projectName=backend'
+        sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=backend -Dsonar.projectName=backend -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN'
     }
-}
 }
