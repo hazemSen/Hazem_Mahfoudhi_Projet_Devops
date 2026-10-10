@@ -8,10 +8,9 @@ node {
         sh './mvnw clean package -DskipTests'
     }
 
-    stage('SonarQube Analysis') {
-        withSonarQubeEnv('SonarQube-Server') {
-            // Utilisation du nom complet du plugin Maven SonarQube
-            sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
-        }
+stage('SonarQube Analysis') {
+    withSonarQubeEnv('SonarQube-Server') {
+        sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -X'
     }
+}
 }
