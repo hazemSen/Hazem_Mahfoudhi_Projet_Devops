@@ -10,6 +10,7 @@ node {
 
 stage('SonarQube Analysis') {
     withSonarQubeEnv('SonarQube-Server') {
-        sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=backend -Dsonar.projectName=backend -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN'
+        // Utilisation de guillemets doubles (") pour transmettre le token et l'URL
+        sh "./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=backend -Dsonar.projectName=backend -Dsonar.host.url=http://172.17.0.1:9000 -Dsonar.token=${SONAR_TOKEN}"
     }
 }}
