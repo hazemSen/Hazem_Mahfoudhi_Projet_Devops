@@ -9,4 +9,12 @@ node {
         // Lancer le build via le wrapper Maven du projet
         sh './mvnw clean package -DskipTests'
     }
+
+    stage('SonarQube Analysis') {
+        // Utilisation du serveur SonarQube configuré dans Jenkins
+        withSonarQubeEnv('SonarQube-Server') {
+            // Lancement de l'analyse SonarQube via Maven
+            sh './mvnw sonar:sonar'
+        }
+    }
 }
