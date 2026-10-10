@@ -26,19 +26,15 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    // Option 1 : Construction simple de l'image Docker locale
+                    // 1. Construire l'image localement
                     sh 'docker build -t backend:latest .'
                     
-                    /* 
-                      Option 2 : Si vous souhaitez pousser l'image sur Docker Hub 
-                      (Nécessite de configurer des identifiants Docker dans Jenkins)
-                      
-                      docker.withRegistry('https://index.docker.io/v1/', 'votre-id-credential-dockerhub') {
-                          def customImage = docker.image("votre-username-dockerhub/backend:latest")
-                          customImage.build(".")
-                          customImage.push()
-                      }
-                    */
+                    // 2. Se connecter à Docker Hub et pousser l'image
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                        sh 'docker tag backend:latest $DOCKER_USER/backend:latest'
+                        sh 'docker push $DOCKER_USER/backend:latest'
+                    }
                 }
             }
         }
