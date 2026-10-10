@@ -4,17 +4,14 @@ node {
     }
 
     stage('Maven Build') {
-        // Donner les permissions d'exécution au script wrapper
         sh 'chmod +x mvnw'
-        // Lancer le build via le wrapper Maven du projet
         sh './mvnw clean package -DskipTests'
     }
 
     stage('SonarQube Analysis') {
-        // Utilisation du serveur SonarQube configuré dans Jenkins
         withSonarQubeEnv('SonarQube-Server') {
-            // Lancement de l'analyse SonarQube via Maven
-            sh './mvnw sonar:sonar'
+            // Utilisation du nom complet du plugin Maven SonarQube
+            sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
         }
     }
 }
