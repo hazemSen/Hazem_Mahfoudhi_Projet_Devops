@@ -10,7 +10,7 @@ node {
 
 stage('SonarQube Analysis') {
     withSonarQubeEnv('SonarQube-Server') {
-        sh "./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=backend -Dsonar.projectName=backend -Dsonar.host.url=http://172.17.0.1:9000 -Dsonar.token=\${SONAR_TOKEN}"
+        sh "./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=backend -Dsonar.projectName=backend -Dsonar.host.url=http://172.17.0.1:9000 -Dsonar.token=${env.SONAR_TOKEN}"
     }
 }
 
