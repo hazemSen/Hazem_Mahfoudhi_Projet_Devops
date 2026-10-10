@@ -23,21 +23,20 @@ pipeline {
             }
         }
 
-stage('Docker Build & Push') {
-    steps {
-        script {
-            // 1. Construire l'image localement
-            sh 'docker build -t backend:latest .'
-            
-            // 2. Se connecter à Docker Hub et pousser l'image avec des guillemets de protection
-            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-                sh 'docker tag backend:latest "$DOCKER_USER/backend:latest"'
-                sh 'docker push "$DOCKER_USER/backend:latest"'
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                    // 1. Construire l'image localement
+                    sh 'docker build -t backend:latest .'
+                    
+                    // 2. Se connecter à Docker Hub et pousser l'image
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                        sh 'docker tag backend:latest ${DOCKER_USER}/backend:latest'
+                        sh 'docker push ${DOCKER_USER}/backend:latest'
+                    }
+                }
             }
-        }
-    }
-}
         }
     }
 }
